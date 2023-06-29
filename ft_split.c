@@ -5,62 +5,121 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohayek <ohayek@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/20 22:16:12 by ohayek            #+#    #+#             */
-/*   Updated: 2023/06/20 22:16:12 by ohayek           ###   ########.fr       */
+/*   Created: 2023/06/29 22:36:34 by ohayek            #+#    #+#             */
+/*   Updated: 2023/06/29 22:36:34 by ohayek           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"libft.h"
 
-static size_t	w_l(char const *s, char c)
+static inline
+char	**ft_deallocate(char **result, size_t i)
 {
-	size_t	r;
+	size_t	j;
 
-	r = 0;
-	while (s[r] != '\0' && s[r] != c)
-		r++;
-	return (r);
+	j = 0;
+	while (j < i)
+		free(result[j++]);
+	free(result);
+	return (NULL);
 }
 
-static size_t	w_c(char const *s, char c)
+static inline
+char	*ft_sub(char const *s, size_t start, size_t len)
 {
-	size_t	r;
-
-	r = 0;
-	while (*s != '\0')
-	{
-		if (*s != c && (s[1] == '\0' || s[1] == c))
-			r++;
-		s++;
-	}
-	return (r);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**r;
 	size_t	i;
-	size_t	l;
-	size_t	w_i;
+	size_t	j;
+	char	*str;
 
-	if (!s)
+	str = (char *)malloc(sizeof(char) * (len - start) + 1);
+	if (!str)
 		return (NULL);
-	l = w_c(s, c);
-	r = (char **)malloc(sizeof(char *) * l + 1);
-	if (r == NULL)
-		return (NULL);
-	i = 0;
-	while (i < l)
+	i = start;
+	j = 0;
+	while (j < (len - start))
 	{
-		while (*s == c && *s != '\0')
-			s++;
-		r[i] = (char *)malloc(sizeof(char) * w_l(s, c) + 1);
-		w_i = 0;
-		while (*s != c && *s != '\0')
-			r[i][w_i++] = *s++;
-		r[i][w_i] = '\0';
+		str[j] = s[i];
+		i++;
+		j++;
+	}
+	str[j] = '\0';
+	return (str);
+}
+
+static inline
+char	*ft_get_word(const char *str, char c, int word)
+{
+	static size_t	i = 0;
+	static size_t	j = 0;
+	char	*result;
+
+	while (str[i] && str[i] == c)
+		i++;
+	j = i;
+	while (str[i])
+	{
+		if (str[i] == c)
+		{
+			result = ft_sub(strm j, i);
+			if (word == 0)
+				i = 0;
+			return (result);
+		}
 		i++;
 	}
-	r[i] = NULL;
-	return (r);
+	result = ft_sub(str, j, i);
+	i = 0;
+	return (result);
+}
+
+static inline
+int	ft_count(const char *str, char c)
+{
+	size_t	num_of_words;
+	size_t	i;
+
+	if (!srt[0])
+		return (0);
+	num_of_words = 0;
+	i = 0;
+	while (str[i] && str[i] == c)
+		i++;
+	while (str[i])
+	{
+		if (str[i] == c)
+		{
+			num_of_words++;
+			while (str[i] && str[i] == c)
+				i++;
+			continue;
+		}
+		i++;
+	}
+	if (str[i - 1] != c)
+		num_of_words++;
+	return (num_of_words);
+}
+
+char	**ft_split(const char *str, char c)
+{
+	char	**result;
+	int	num_of_words;
+	size_t	i;
+
+	if (!str)
+		return (NULL);
+	num_of_words = ft_count(str, c);
+	result = (char **)malloc(sizeof(char *) * (num_of_words + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (num_of_words--)
+	{
+		result[i] = ft_get_word(str, c, num_of_words);
+		if (!result[i])
+			return (ft_deallocate(result, i));
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
 }
