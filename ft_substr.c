@@ -14,26 +14,26 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*result;
 	size_t	i;
-	size_t	size;
+	size_t	j;
+	char	*str;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
-	if (ft_strlen(s) <= start)
-		return ((char *)ft_calloc(1, 1));
-	size = ft_strlen(s);
-	if (size < len)
-		len = size;
-	result = (char *)malloc(sizeof(char) * len + 1);
-	if (result == NULL)
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
 		return (NULL);
 	i = 0;
-	while (i < len)
+	j = 0;
+	while (s[i])
 	{
-		result[i] = s[i + start];
+		if (i >= start && j < len)
+		{
+			str[j] = s[i];
+			j++;
+		}
 		i++;
 	}
-	result[i] = '\0';
-	return (result);
+	str[j] = 0;
+	return (str);
 }

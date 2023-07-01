@@ -60,7 +60,7 @@ char	*ft_get_word(const char *str, char c, int word)
 	{
 		if (str[i] == c)
 		{
-			result = ft_sub(strm j, i);
+			result = ft_sub(str, j, i);
 			if (word == 0)
 				i = 0;
 			return (result);
@@ -78,7 +78,7 @@ int	ft_count(const char *str, char c)
 	size_t	num_of_words;
 	size_t	i;
 
-	if (!srt[0])
+	if (!str[0])
 		return (0);
 	num_of_words = 0;
 	i = 0;
