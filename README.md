@@ -14,5 +14,5 @@ void   *ft_memchr(const void *s, int c, size_t n)           -> filling a temp_s 
 int    *ft_memcmp(const void *s1, const void *s2, size_t n) -> compare s1 and s2 as an unsigned const char from 0 to n
 void   *ft_memcpy(void *dest, const void *src, size_t n)    -> copying src to dest as a (unsigned char *) its (not handling overlap) the returns dest
 void   *ft_memmove(void *dest, const void *src, size_t n)   -> simillar as memcpy but its handling overlapping the memory
-void  *ft_memset(void *s, int c, size_t n)                  -> filling s by the int c without casting it to unsigned char
+void   *ft_memset(void *s, int c, size_t n)                  -> filling s by the int c without casting it to unsigned char
 ```
